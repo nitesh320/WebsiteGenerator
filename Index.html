@@ -1,0 +1,494 @@
+﻿<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DemoDeck</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --bg: #f0f3f8;
+            --card: #ffffff;
+            --border: #ddd;
+            --accent: #22c55e;
+            --hover: #20b556;
+            --basic: #3b82f6;
+            --medium: #f59e0b;
+            --premium: #ef4444;
+            --comingSoonBg: #fff4e6;
+            --comingSoonBorder: #ff9c42;
+            --footerBg: #1f2937;
+            --footerText: #f3f4f6;
+            --footerAccent: #22c55e;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            margin: 0;
+            font-family: 'Montserrat', sans-serif;
+            background: var(--bg);
+            color: #111;
+            display: flex;
+            flex-direction: column;
+            min-height: 100vh;
+        }
+
+        .navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            background: var(--footerBg);
+            border-bottom: 1px solid var(--border);
+            display: flex;
+            flex-wrap: wrap;
+            align-items: center;
+            justify-content: space-between;
+            padding: 14px 20px;
+            box-shadow: 0 4px 12px rgba(0,0,0,0.08);
+            z-index: 1000;
+        }
+
+        .brand {
+            font-weight: 700;
+            font-size: 26px;
+            color: var(--accent);
+            letter-spacing: 1px;
+        }
+
+        .nav-items {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            flex-wrap: wrap;
+        }
+
+        select, button {
+            padding: 12px 18px;
+            border-radius: 8px;
+            border: 1px solid var(--border);
+            font-size: 16px;
+            outline: none;
+            transition: all 0.2s ease;
+        }
+
+            select:disabled {
+                opacity: 0.6;
+                cursor: not-allowed;
+            }
+
+        button {
+            background: var(--accent);
+            color: white;
+            font-weight: 500;
+            cursor: pointer;
+            border: none;
+        }
+
+            button:hover {
+                box-shadow: 0 6px 12px rgba(0,0,0,0.15);
+            }
+
+            button.secondary {
+                background: #f0f0f0;
+                color: #111;
+            }
+
+                button.secondary:hover {
+                    background: #e0e0e0;
+                }
+
+        .badge {
+            padding: 6px 14px;
+            border-radius: 20px;
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            background: #bbb;
+            letter-spacing: 0.5px;
+            text-transform: uppercase;
+        }
+
+        .preview-wrapper {
+            padding: 20px;
+            margin-top: 76px;
+            flex: 1 0 auto;
+            position: relative;
+        }
+
+        iframe {
+            width: 100%;
+            height: calc(108vh - 170px);
+            border-radius: 16px;
+            border: 1px solid var(--border);
+            background: white;
+            transition: width .3s ease;
+            box-shadow: 0 12px 30px rgba(0,0,0,0.1);
+        }
+
+        .spinner {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background: rgba(255,255,255,0.8);
+            border-radius: 12px;
+            display: none;
+        }
+
+            .spinner::after {
+                content: "";
+                width: 50px;
+                height: 50px;
+                border: 4px solid var(--accent);
+                border-top-color: transparent;
+                border-radius: 50%;
+                animation: spin 1s linear infinite;
+            }
+
+        @keyframes spin {
+            to {
+                transform: rotate(360deg);
+            }
+        }
+
+        #placeholder {
+            position: absolute;
+            inset: 0;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+            padding: 20px;
+        }
+
+        .placeholder-card {
+            border-radius: 16px;
+            padding: 40px 30px;
+            max-width: 1200px;
+            box-shadow: 0 6px 20px rgba(0,0,0,0.05);
+        }
+
+            .placeholder-card.generate {
+                background: linear-gradient(135deg, #e6ffed, #c1ffd7);
+                border: 2px solid var(--accent);
+            }
+
+            .placeholder-card.coming {
+                background: var(--comingSoonBg);
+                border: 2px dashed var(--comingSoonBorder);
+                animation: pulse 2s infinite;
+            }
+
+            .placeholder-card h1 {
+                font-size: 40px;
+                font-weight: 700;
+                margin-bottom: 12px;
+            }
+
+            .placeholder-card p {
+                font-size: 20px;
+                color: #333;
+                margin-bottom: 20px;
+            }
+
+        @keyframes pulse {
+            0% {
+                transform: scale(1);
+                box-shadow: 0 0 0 rgba(255,156,66,0.4);
+            }
+
+            50% {
+                transform: scale(1.02);
+                box-shadow: 0 0 20px rgba(255,156,66,0.6);
+            }
+
+            100% {
+                transform: scale(1);
+                box-shadow: 0 0 0 rgba(255,156,66,0.4);
+            }
+        }
+
+        footer {
+            background: var(--footerBg);
+            color: var(--footerText);
+            text-align: center;
+            padding: 20px 10px;
+            flex-shrink: 0;
+            height: 70px;
+        }
+
+            footer a {
+                color: var(--footerAccent);
+                text-decoration: none;
+                margin: 0 8px;
+                font-weight: 500;
+            }
+
+                footer a:hover {
+                    text-decoration: underline;
+                }
+
+        @media(max-width:768px) {
+            iframe {
+                height: calc(100vh - 180px);
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="navbar">
+        <div class="brand">DemoDeck</div>
+        <div class="nav-items">
+
+            <!-- Language Selector -->
+            <select id="languageSelect">
+                <option value="en">English</option>
+                <option value="hi">Hindi</option>
+                <option value="gu">Gujarati</option>
+            </select>
+
+            <select id="businessType">
+                <option value="">Select Business Type</option>
+                <option value="coffee">Coffee</option>
+                <option value="restaurant">Restaurant</option>
+                <option value="gym">Gym</option>
+                <option value="clinic">Clinic</option>
+                <option value="electronics">Electronics</option>
+                <option value="photography">Photography</option>
+                <option value="eventplanner">Event Planner</option>
+                <option value="portfolio">Portfolio</option>
+                <option value="coaching">Coaching</option>
+                <option value="bakery">Bakery</option>
+                <option value="juicebar">Juice Bar</option>
+                <option value="yogastudio">Yoga Studio</option>
+                <option value="nutritionist">Nutritionist</option>
+                <option value="lawfirm">Law Firm</option>
+                <option value="accounting">Accounting</option>
+                <option value="dentist">Dental Clinic</option>
+                <option value="physiotherapy">Physiotherapy</option>
+                <option value="clothingstore">Clothing Store</option>
+                <option value="crafts">Crafts / Handmade</option>
+                <option value="bookstore">Bookstore</option>
+                <option value="salon">Salon / Spa</option>
+                <option value="interiordesign">Interior Design</option>
+                <option value="musicschool">Music School</option>
+                <option value="onlinecourses">Online Courses</option>
+                <option value="languageclasses">Language Classes</option>
+                <option value="weddingplanner">Wedding Planner</option>
+                <option value="travelagency">Travel Agency</option>
+                <option value="realestate">Real Estate Agency</option>
+                <option value="ngo">NGO / Charity</option>
+            </select>
+
+            <select id="websiteList" disabled>
+                <option value="">Select Demo</option>
+            </select>
+
+            <span class="badge" id="planBadge" hidden>—</span>
+            <button class="secondary" id="mobileBtn">📱 Mobile</button>
+            <button class="secondary" id="desktopBtn">🖥️ Desktop</button>
+            <button id="whatsappBtn" onclick="chatWhatsApp()" disabled>Chat on WhatsApp</button>
+        </div>
+    </div>
+
+    <div class="preview-wrapper">
+        <div class="spinner" id="spinner"></div>
+        <iframe id="preview"></iframe>
+        <div id="placeholder"></div>
+    </div>
+
+    <footer>
+        &copy; 2026 DemoDeck. All rights reserved.
+    </footer>
+
+    <script>
+// Demo data with translations
+const data = {
+  coffee: [
+    { name: { en: "Coffee 1", hi: "कॉफ़ी 1", gu: "કોફી 1" }, url: "https://nitesh320.github.io/FourCofee/", plan: "Basic" },
+    { name: { en: "Coffee 2", hi: "कॉफ़ी 2", gu: "કોફી 2" }, url: "https://nitesh320.github.io/SWATCOFFEE/", plan: "Premium" }
+  ],
+  restaurant: [
+    { name: { en: "Restaurant 1", hi: "रेस्टोरेंट 1", gu: "રેસ્ટોરન્ટ 1" }, url: "https://nitesh320.github.io/RoyalFeast/", plan: "Medium" },
+    { name: { en: "Restaurant 2", hi: "रेस्टोरेंट 2", gu: "રેસ્ટોરન્ટ 2" }, url: "https://nitesh320.github.io/CrownCurry/", plan: "Premium" },
+    { name: { en: "Restaurant 3", hi: "रेस्टोरेंट 3", gu: "રેસ્ટોરન્ટ 3" }, url: "https://nitesh320.github.io/Pato/", plan: "Basic" }
+  ]
+};
+
+// Elements
+const businessType = document.getElementById("businessType");
+const websiteList = document.getElementById("websiteList");
+const iframe = document.getElementById("preview");
+const spinner = document.getElementById("spinner");
+const badge = document.getElementById("planBadge");
+const whatsappBtn = document.getElementById("whatsappBtn");
+const placeholder = document.getElementById("placeholder");
+const languageSelect = document.getElementById("languageSelect");
+const mobileBtn = document.getElementById("mobileBtn");
+const desktopBtn = document.getElementById("desktopBtn");
+
+// Translations
+const translations = {
+    en: {
+        selectBusiness: "Select Business Type",
+        selectDemo: "Select Demo",
+        generateTitle: "🚀 Generate Your Business Demo 🚀",
+        generateText: "Showcase your brand, impress clients, and grow your business online!",
+        comingTitle: "🚧 Coming Soon! 🚧",
+        comingText: "The demo for this business type is not available yet.\nClick WhatsApp below to get notified.",
+        whatsappBtn: "Chat on WhatsApp",
+        mobile: "📱 Mobile",
+        desktop: "🖥️ Desktop",
+        waMsgDemo: "Hello \nI am interested in the {business} website demo.\nSelected Demo: {demo}\nPlease share details and pricing.",
+        waMsgComing: "Hello \nI am interested in the {business} website demo, which is currently coming soon.\nPlease notify me when it becomes available."
+    },
+    hi: {
+        selectBusiness: "व्यवसाय का प्रकार चुनें",
+        selectDemo: "डेमो चुनें",
+        generateTitle: "🚀 अपने व्यवसाय का डेमो बनाएं 🚀",
+        generateText: "अपने ब्रांड को दिखाएँ, ग्राहकों को प्रभावित करें और ऑनलाइन व्यवसाय बढ़ाएँ!",
+        comingTitle: "🚧 जल्द आ रहा है! 🚧",
+        comingText: "इस व्यवसाय के प्रकार का डेमो अभी उपलब्ध नहीं है।\nसंपर्क करने के लिए व्हाट्सएप का उपयोग करें।",
+        whatsappBtn: "व्हाट्सएप पर चैट करें",
+        mobile: "📱 मोबाइल",
+        desktop: "🖥️ डेस्कटॉप",
+        waMsgDemo: "नमस्ते \nमुझे {business} वेबसाइट डेमो में रुचि है।\nचयनित डेमो: {demo}\nकृपया विवरण और मूल्य साझा करें।",
+        waMsgComing: "नमस्ते \nमुझे {business} वेबसाइट डेमो में रुचि है, जो वर्तमान में उपलब्ध नहीं है।\nकृपया मुझे सूचित करें जब यह उपलब्ध हो।"
+    },
+    gu: {
+        selectBusiness: "વ્યવસાય પ્રકાર પસંદ કરો",
+        selectDemo: "ડેમો પસંદ કરો",
+        generateTitle: "🚀 તમારા વ્યવસાયનું ડેમો બનાવો 🚀",
+        generateText: "તમારા બ્રાન્ડને દર્શાવો, ગ્રાહકોને પ્રભાવિત કરો અને ઓનલાઈન વ્યવસાય વધારવો!",
+        comingTitle: "🚧 ટૂંક સમયમાં આવશે! 🚧",
+        comingText: "આ વ્યવસાય પ્રકાર માટે ડેમો હજુ ઉપલબ્ધ નથી.\nસૂચના મેળવવા માટે વોટ્સએપ પર સંપર્ક કરો.",
+        whatsappBtn: "વોટ્સએપ પર ચેટ કરો",
+        mobile: "📱 મોબાઇલ",
+        desktop: "🖥️ ડેસ્કટોપ",
+        waMsgDemo: "હેલો \nમને {business} વેબસાઈટ ડેમોમાં રસ છે.\nચૂંટેલ ડેમો: {demo}\nકૃપા કરીને વિગતો અને ભાવ શેર કરો.",
+        waMsgComing: "હેલો \nમને {business} વેબસાઈટ ડેમોમાં રસ છે, જે હાલમાં ઉપલબ્ધ નથી.\nજ્યારે ઉપલબ્ધ થાય ત્યારે કૃપા કરીને મને જાણ કરો."
+    }
+};
+
+// Business type translations
+const businessTranslations = {
+    en: { coffee:"Coffee", restaurant:"Restaurant", gym:"Gym", clinic:"Clinic", electronics:"Electronics", photography:"Photography", eventplanner:"Event Planner", portfolio:"Portfolio", coaching:"Coaching", bakery:"Bakery", juicebar:"Juice Bar", yogastudio:"Yoga Studio", nutritionist:"Nutritionist", lawfirm:"Law Firm", accounting:"Accounting", dentist:"Dental Clinic", physiotherapy:"Physiotherapy", clothingstore:"Clothing Store", crafts:"Crafts / Handmade", bookstore:"Bookstore", salon:"Salon / Spa", interiordesign:"Interior Design", musicschool:"Music School", onlinecourses:"Online Courses", languageclasses:"Language Classes", weddingplanner:"Wedding Planner", travelagency:"Travel Agency", realestate:"Real Estate Agency", ngo:"NGO / Charity"},
+    hi: { coffee:"कॉफ़ी", restaurant:"रेस्टोरेंट", gym:"जिम", clinic:"क्लिनिक", electronics:"इलेक्ट्रॉनिक्स", photography:"फोटोग्राफी", eventplanner:"इवेंट प्लानर", portfolio:"पोर्टफोलियो", coaching:"कोचिंग", bakery:"बेकरी", juicebar:"जूस बार", yogastudio:"योगा स्टूडियो", nutritionist:"पोषण विशेषज्ञ", lawfirm:"लॉ फर्म", accounting:"लेखांकन", dentist:"डेंटल क्लिनिक", physiotherapy:"फिजियोथेरेपी", clothingstore:"कपड़ों की दुकान", crafts:"हस्तशिल्प / क्राफ्ट्स", bookstore:"बुकस्टोर", salon:"सैलून / स्पा", interiordesign:"इंटीरियर डिज़ाइन", musicschool:"संगीत स्कूल", onlinecourses:"ऑनलाइन कोर्स", languageclasses:"भाषा कक्षाएँ", weddingplanner:"वेडिंग प्लानर", travelagency:"ट्रैवल एजेंसी", realestate:"रियल एस्टेट एजेंसी", ngo:"एनजीओ / चैरिटी"},
+    gu: { coffee:"કોફી", restaurant:"રેસ્ટોરન્ટ", gym:"જિમ", clinic:"ક્લિનિક", electronics:"ઇલેક્ટ્રોનિક્સ", photography:"ફોટોગ્રાફી", eventplanner:"ઇવેન્ટ પ્લાનર", portfolio:"પોર્ટફોલિયો", coaching:"કોચિંગ", bakery:"બેકરી", juicebar:"જ્યૂસ બાર", yogastudio:"યોગા સ્ટુડિયો", nutritionist:"પોષણ નિષ્ણાત", lawfirm:"લૉ ફર્મ", accounting:"અકાઉન્ટિંગ", dentist:"ડેન્ટલ ક્લિનિક", physiotherapy:"ફિઝિયોથેરાપી", clothingstore:"કપડાની દુકાન", crafts:"હસ્તકલા / ક્રાફ્ટ્સ", bookstore:"બુકસ્ટોર", salon:"સેલૂન / સ્પા", interiordesign:"ઇન્ટિરિયર ડિઝાઇન", musicschool:"મ્યુઝિક સ્કૂલ", onlinecourses:"ઓનલાઇન કોર્સ", languageclasses:"ભાષા કક્ષાઓ", weddingplanner:"વેડિંગ પ્લાનર", travelagency:"ટ્રાવેલ એજન્સી", realestate:"રીયલ એસ્ટેટ એજન્સી", ngo:"એનજીઓ / ચેરિટી"}
+};
+
+// Show placeholder
+function showPlaceholder(type) {
+    const lang = languageSelect.value;
+    let html = '';
+    if(type && data[type] && data[type].length > 0){
+        html = `<div class="placeholder-card generate">
+                    <h1>${translations[lang].generateTitle}</h1>
+                    <p>${translations[lang].generateText}</p>
+                </div>`;
+    } else if(type){
+        html = `<div class="placeholder-card coming">
+                    <h1>${translations[lang].comingTitle}</h1>
+                    <p>${translations[lang].comingText}</p>
+                </div>`;
+    } else {
+        html = `<div class="placeholder-card generate">
+                    <h1>${translations[lang].generateTitle}</h1>
+                    <p>${translations[lang].generateText}</p>
+                </div>`;
+    }
+    placeholder.innerHTML = html;
+    placeholder.style.display = "flex";
+}
+
+// Update UI for selected language
+function updateLanguage() {
+    const lang = languageSelect.value;
+
+    businessType.options[0].textContent = translations[lang].selectBusiness;
+    websiteList.options[0].textContent = translations[lang].selectDemo;
+    whatsappBtn.textContent = translations[lang].whatsappBtn;
+    mobileBtn.textContent = translations[lang].mobile;
+    desktopBtn.textContent = translations[lang].desktop;
+
+    for(let i=1;i<businessType.options.length;i++){
+        const val = businessType.options[i].value;
+        businessType.options[i].textContent = businessTranslations[lang][val] || val;
+    }
+
+    showPlaceholder(businessType.value);
+}
+
+languageSelect.addEventListener("change", updateLanguage);
+
+// Business selection
+businessType.addEventListener("change", ()=>{
+    const type = businessType.value;
+    const lang = languageSelect.value;
+
+    websiteList.innerHTML = `<option value="">${translations[lang].selectDemo}</option>`;
+    websiteList.disabled = true;
+    badge.textContent = "—";
+    badge.style.background = "#bbb";
+    iframe.src = "";
+    whatsappBtn.disabled = false;
+
+    if(type && data[type] && data[type].length > 0){
+        data[type].forEach(site=>{
+            const opt = document.createElement("option");
+            opt.value = site.url;
+            opt.textContent = site.name[lang];
+            opt.dataset.plan = site.plan;
+            websiteList.appendChild(opt);
+        });
+        websiteList.disabled = false;
+        whatsappBtn.disabled = true;
+    }
+    showPlaceholder(type);
+});
+
+// Website selection
+websiteList.addEventListener("change", ()=>{
+    const selected = websiteList.selectedOptions[0];
+    if(!selected || !selected.value) return;
+    spinner.style.display = "flex";
+    iframe.src = selected.value;
+    badge.textContent = selected.dataset.plan;
+    badge.style.background = selected.dataset.plan === "Basic" ? "var(--basic)" :
+                             selected.dataset.plan === "Medium" ? "var(--medium)" :
+                             "var(--premium)";
+    placeholder.style.display = "none";
+    whatsappBtn.disabled = false;
+});
+
+iframe.onload = ()=> spinner.style.display = "none";
+
+// View buttons
+mobileBtn.onclick = ()=> iframe.style.width = "375px";
+desktopBtn.onclick = ()=> iframe.style.width = "100%";
+
+// WhatsApp chat
+function chatWhatsApp(){
+    const lang = languageSelect.value;
+    const demoSelected = websiteList.selectedOptions[0] && websiteList.selectedOptions[0].value;
+    const business = businessType.options[businessType.selectedIndex].text;
+    const demo = websiteList.selectedOptions[0] ? websiteList.selectedOptions[0].text : "";
+
+    const phone = "8735838096";
+    let msgTemplate = demoSelected ? translations[lang].waMsgDemo : translations[lang].waMsgComing;
+    let message = msgTemplate.replace("{business}", business).replace("{demo}", demo);
+
+    window.open(`https://wa.me/91${phone}?text=${encodeURIComponent(message)}`, "_blank");
+}
+
+// Initial load
+updateLanguage();
+    </script>
+
+</body>
+</html>
