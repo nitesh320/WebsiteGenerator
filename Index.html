@@ -1,4 +1,4 @@
-﻿<!DOCTYPE html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
@@ -113,7 +113,7 @@
 
         .preview-wrapper {
             padding: 20px;
-            margin-top: 76px;
+            margin-top: 10px;
             flex: 1 0 auto;
             position: relative;
         }
@@ -237,6 +237,31 @@
                 height: calc(100vh - 180px);
             }
         }
+
+        .animated-note {
+    margin-top: 95px;
+    background: linear-gradient(90deg, #e43429, #e43429);
+    border-bottom: 1px solid #99f6e4;
+    overflow: hidden;
+    white-space: nowrap;
+}
+
+.animated-note span {
+    display: inline-block;
+    padding: 10px 40px;
+    font-size: 18px;
+    font-weight: 600;
+    color: white;
+    animation: slideText 20s linear infinite;
+    text-transform:uppercase;
+}
+
+
+@keyframes slideText {
+    0% { transform: translateX(100%); }
+    100% { transform: translateX(-100%); }
+}
+
     </style>
 </head>
 <body>
@@ -294,6 +319,9 @@
             <button class="secondary" id="desktopBtn">🖥️ Desktop</button>
             <button id="whatsappBtn" onclick="chatWhatsApp()" disabled>Chat on WhatsApp</button>
         </div>
+    </div>
+    <div class="animated-note">
+        <span>⚠️ Limited demo designs shown. Need more options or customization? Contact us on WhatsApp !</span>
     </div>
 
     <div class="preview-wrapper">
