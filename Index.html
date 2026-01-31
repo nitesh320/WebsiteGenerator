@@ -2,7 +2,7 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>DemoDeck</title>
+    <title>SiteDemo</title>
     <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@400;500;600;700&display=swap" rel="stylesheet">
     <style>
         :root {
@@ -241,7 +241,8 @@
         .animated-note {
     margin-top: 95px;
     background: linear-gradient(90deg, #e43429, #e43429);
-    border-bottom: 1px solid #99f6e4;
+    border-top: 5px solid #111;
+    border-bottom: 5px solid #111;
     overflow: hidden;
     white-space: nowrap;
 }
@@ -267,7 +268,7 @@
 <body>
 
     <div class="navbar">
-        <div class="brand">DemoDeck</div>
+        <div class="brand">SiteDemo</div>
         <div class="nav-items">
 
             <!-- Language Selector -->
@@ -315,13 +316,13 @@
             </select>
 
             <span class="badge" id="planBadge" hidden>—</span>
-            <button class="secondary" id="mobileBtn">📱 Mobile</button>
-            <button class="secondary" id="desktopBtn">🖥️ Desktop</button>
+            <button class="secondary" id="mobileBtn" hidden>📱 Mobile</button>
+            <button class="secondary" id="desktopBtn" hidden>🖥️ Desktop</button>
             <button id="whatsappBtn" onclick="chatWhatsApp()" disabled>Chat on WhatsApp</button>
         </div>
     </div>
     <div class="animated-note">
-        <span>⚠️ Limited demo designs shown. Need more options or customization? Contact us on WhatsApp !</span>
+        <span id="animatedText"></span>
     </div>
 
     <div class="preview-wrapper">
@@ -331,7 +332,7 @@
     </div>
 
     <footer>
-        &copy; 2026 DemoDeck. All rights reserved.
+        &copy; 2026 SiteDemo. All rights reserved.
     </footer>
 
     <script>
@@ -373,7 +374,8 @@ const translations = {
         mobile: "📱 Mobile",
         desktop: "🖥️ Desktop",
         waMsgDemo: "Hello \nI am interested in the {business} website demo.\nSelected Demo: {demo}\nPlease share details and pricing.",
-        waMsgComing: "Hello \nI am interested in the {business} website demo, which is currently coming soon.\nPlease notify me when it becomes available."
+        waMsgComing: "Hello \nI am interested in the {business} website demo, which is currently coming soon.\nPlease notify me when it becomes available.",
+        animatedLine: "⚠️ Limited demo designs shown. Need more options or customization? Contact us on WhatsApp !"
     },
     hi: {
         selectBusiness: "व्यवसाय का प्रकार चुनें",
@@ -386,7 +388,8 @@ const translations = {
         mobile: "📱 मोबाइल",
         desktop: "🖥️ डेस्कटॉप",
         waMsgDemo: "नमस्ते \nमुझे {business} वेबसाइट डेमो में रुचि है।\nचयनित डेमो: {demo}\nकृपया विवरण और मूल्य साझा करें।",
-        waMsgComing: "नमस्ते \nमुझे {business} वेबसाइट डेमो में रुचि है, जो वर्तमान में उपलब्ध नहीं है।\nकृपया मुझे सूचित करें जब यह उपलब्ध हो।"
+        waMsgComing: "नमस्ते \nमुझे {business} वेबसाइट डेमो में रुचि है, जो वर्तमान में उपलब्ध नहीं है।\nकृपया मुझे सूचित करें जब यह उपलब्ध हो।",
+        animatedLine: "⚠️ यहाँ सीमित डेमो डिज़ाइन दिखाए गए हैं। अधिक विकल्प या कस्टमाइज़ेशन के लिए व्हाट्सएप पर संपर्क करें !"
     },
     gu: {
         selectBusiness: "વ્યવસાય પ્રકાર પસંદ કરો",
@@ -399,9 +402,11 @@ const translations = {
         mobile: "📱 મોબાઇલ",
         desktop: "🖥️ ડેસ્કટોપ",
         waMsgDemo: "હેલો \nમને {business} વેબસાઈટ ડેમોમાં રસ છે.\nચૂંટેલ ડેમો: {demo}\nકૃપા કરીને વિગતો અને ભાવ શેર કરો.",
-        waMsgComing: "હેલો \nમને {business} વેબસાઈટ ડેમોમાં રસ છે, જે હાલમાં ઉપલબ્ધ નથી.\nજ્યારે ઉપલબ્ધ થાય ત્યારે કૃપા કરીને મને જાણ કરો."
+        waMsgComing: "હેલો \nમને {business} વેબસાઈટ ડેમોમાં રસ છે, જે હાલમાં ઉપલબ્ધ નથી.\nજ્યારે ઉપલબ્ધ થાય ત્યારે કૃપા કરીને મને જાણ કરો.",
+        animatedLine: "⚠️ અહીં મર્યાદિત ડેમો ડિઝાઇન બતાવવામાં આવ્યા છે. વધુ વિકલ્પો અથવા કસ્ટમાઇઝેશન માટે વોટ્સએપ પર સંપર્ક કરો !"
     }
 };
+
 
 // Business type translations
 const businessTranslations = {
@@ -448,6 +453,8 @@ function updateLanguage() {
         const val = businessType.options[i].value;
         businessType.options[i].textContent = businessTranslations[lang][val] || val;
     }
+    document.getElementById("animatedText").textContent =
+    translations[lang].animatedLine;
 
     showPlaceholder(businessType.value);
 }
