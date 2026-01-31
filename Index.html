@@ -262,7 +262,16 @@
     0% { transform: translateX(100%); }
     100% { transform: translateX(-100%); }
 }
-
+/* Visitor Counter */
+        .visitor-counter {
+            background: #111;
+            color: #fff;
+            text-align: center;
+            padding: 10px;
+            font-size: 16px;
+            font-weight: 600;
+            letter-spacing: 0.5px;
+        }
     </style>
 </head>
 <body>
@@ -324,6 +333,10 @@
     <div class="animated-note">
         <span id="animatedText"></span>
     </div>
+    <!-- Visitor Counter -->
+    <div class="visitor-counter">
+        <span id="visitorCount">1245</span>+ people viewed this demo
+    </div>
 
     <div class="preview-wrapper">
         <div class="spinner" id="spinner"></div>
@@ -365,6 +378,8 @@ const placeholder = document.getElementById("placeholder");
 const languageSelect = document.getElementById("languageSelect");
 const mobileBtn = document.getElementById("mobileBtn");
 const desktopBtn = document.getElementById("desktopBtn");
+const visitorCountElem = document.getElementById("visitorCount");
+
 
 // Translations
 const translations = {
@@ -443,6 +458,12 @@ function showPlaceholder(type) {
     placeholder.innerHTML = html;
     placeholder.style.display = "flex";
 }
+// Visitor counter (Option 1)
+let visitorCount = 1245;
+setInterval(() => {
+    visitorCount += Math.floor(Math.random() * 3); // 0-2 increment
+    visitorCountElem.textContent = visitorCount;
+}, 4000);
 
 // Update UI for selected language
 function updateLanguage() {
